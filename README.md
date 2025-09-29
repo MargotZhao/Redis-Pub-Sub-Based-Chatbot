@@ -10,6 +10,10 @@ A simple chatbot application built with Redis Pub/Sub for real-time messaging be
 - Channel-based communication (join/leave channels)
 - Special commands: weather updates, fun facts, user information
 - Multiple concurrent users support
+- Message timestamps
+- Active channel tracking
+- Message history per channel
+- Private/direct messaging between users
 
 ## Technologies Used
 
@@ -78,6 +82,10 @@ docker exec -it python_client_container python mp1_template.py
         - !fact: Random fun fact
         - !whoami: Your user information
         - quit: Exit the chatbot
+        - !channels: Show your active channels
+        - !history <channel>: Show message history
+        - dm <username> <message>: Send private message
+        - !online: List online users
 
 #### User Management
 - `identify <username> <age> <gender> <location>` - Register your user profile
@@ -101,6 +109,11 @@ docker exec -it python_client_container python mp1_template.py
   - Example: `!weather boston`
 - `!fact` - Get a random fun fact
 - `!whoami` - Display your user information
+- `!channels` - Show all channels you're subscribed to 
+- `!history <channel>` - Display last 10 messages from a channel 
+  - Example: `!history general`
+- `dm <username> <message>` - Send a private message to another user 
+  - Example: `dm bob Hey there!`
 - `quit` - Exit the chatbot
 
 ### Testing Multiple Users
@@ -176,6 +189,32 @@ MONITOR
 - `!fact`: Retrieves random fun fact from Redis list
 - `!whoami`: Retrieves and displays user information from Redis hash
 
+### Extra Features 
+
+#### 1. Message Timestamps 
+- Added timestamps to all messages using Python's datetime module
+- Format: `[HH:MM:SS] username: message`
+- Helps users track when messages were sent
+
+#### 2. Active Channel Tracking
+- Tracks all channels user has joined in `self.active_channels` list
+- `!channels` command displays all subscribed channels
+- Updates list when joining or leaving channels
+
+#### 3. Message History
+- Stores last 50 messages for each channel in Redis list
+- Key format: `history:{channel}`
+- `!history <channel>` command displays last 10 messages
+- Uses Redis `LPUSH` to add messages and `LTRIM` to maintain limit
+
+#### 4. Private Messaging 
+- Implemented direct messaging between users
+- Each user automatically subscribes to private channel: `private:{username}`
+- `dm <username> <message>` sends private message to specific user
+- Verifies recipient exists before sending
+- Private messages highlighted differently in output
+- Includes timestamp and [PRIVATE] tag
+  
 ### Challenges and Solutions
 
 **Challenge 1**: Managing asynchronous message reception while waiting for user input
