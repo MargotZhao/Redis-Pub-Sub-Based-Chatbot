@@ -69,7 +69,8 @@ Run the chatbot in the Python client container:
 ```bash
 docker exec -it python_client_container python mp1_template.py
 ```
-<img width="1171" height="488" alt="image" src="https://github.com/user-attachments/assets/061dc1c7-c776-4cd4-b5e8-98f1feb4a0c6" />
+<img width="1400" height="538" alt="image" src="https://github.com/user-attachments/assets/3ae62c2d-9101-463a-815f-0e07fca6f0d6" />
+
 
 
 ### Available Commands
@@ -196,16 +197,23 @@ MONITOR
 - Format: `[HH:MM:SS] username: message`
 - Helps users track when messages were sent
 
+<img width="621" height="177" alt="image" src="https://github.com/user-attachments/assets/bf1d608e-76c6-4c71-81e2-6c89b6253010" />
+
 #### 2. Active Channel Tracking
 - Tracks all channels user has joined in `self.active_channels` list
 - `!channels` command displays all subscribed channels
 - Updates list when joining or leaving channels
+<img width="340" height="88" alt="image" src="https://github.com/user-attachments/assets/2bdd9993-8f91-43be-b963-30aacc3e46f4" />
+
 
 #### 3. Message History
 - Stores last 50 messages for each channel in Redis list
 - Key format: `history:{channel}`
 - `!history <channel>` command displays last 10 messages
 - Uses Redis `LPUSH` to add messages and `LTRIM` to maintain limit
+
+<img width="726" height="257" alt="image" src="https://github.com/user-attachments/assets/b9158eda-c5ba-466c-befa-c4bba9886847" />
+
 
 #### 4. Private Messaging 
 - Implemented direct messaging between users
@@ -214,7 +222,9 @@ MONITOR
 - Verifies recipient exists before sending
 - Private messages highlighted differently in output
 - Includes timestamp and [PRIVATE] tag
-  
+
+<img width="495" height="59" alt="image" src="https://github.com/user-attachments/assets/5c69aa6a-0bde-4d32-b283-f4b6ab431bd7" />
+
 ### Challenges and Solutions
 
 **Challenge 1**: Managing asynchronous message reception while waiting for user input
